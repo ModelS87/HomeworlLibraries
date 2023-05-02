@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.exception.EmployeeAlreadyAddedException;
+import org.example.model.Employee;
 import org.springframework.stereotype.Service;
 import pro.sky.hw_2_8.exception.EmployeeAlreadyAddedException;
 import pro.sky.hw_2_8.exception.EmployeeNotFoundException;
@@ -20,7 +22,11 @@ private final ValidatorService validatorService;
       String surname,
       int department,
       int salary) {
-    Employee employee = new Employee(name, surname, department, salary);
+    Employee employee = new Employee(
+            validatorService.validateName(name),
+            validatorService.validateSurname(surname),
+            department,
+            salary);
     if (employees.contains(employee)) {
       throw new EmployeeAlreadyAddedException();
     }
